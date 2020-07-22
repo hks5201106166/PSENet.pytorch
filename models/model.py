@@ -104,8 +104,8 @@ class PSENet(nn.Module):
 if __name__ == '__main__':
     import time
 
-    device = torch.device('cpu')
-    backbone = 'shufflenetv2'
+    device = torch.device('cuda:0')
+    backbone = 'resnet152'
     net = PSENet(backbone=backbone, pretrained=False, result_num=6).to(device)
     net.eval()
     x = torch.zeros(1, 3, 512, 512).to(device)

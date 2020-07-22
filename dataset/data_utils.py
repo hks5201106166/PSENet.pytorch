@@ -12,7 +12,7 @@ import numpy as np
 import cv2
 from dataset.augment import DataAugment
 from utils.utils import draw_bbox
-
+import time
 data_aug = DataAugment()
 
 
@@ -160,7 +160,7 @@ class MyDataset(data.Dataset):
 
     def load_data(self, data_dir: str) -> list:
         data_list = []
-        for x in glob.glob(data_dir + '/img/*.jpg', recursive=True):
+        for x in glob.glob(data_dir + '/imgs/*.jpg', recursive=True):
             d = pathlib.Path(x)
             label_path = os.path.join(data_dir, 'gt', ('gt_' + str(d.stem) + '.txt'))
             bboxs, text = self._get_annotation(label_path)
@@ -225,5 +225,6 @@ if __name__ == '__main__':
         show_img(label[0])
         show_img(mask[0])
         plt.show()
+        time.sleep(1000)
 
     pbar.close()

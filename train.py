@@ -5,7 +5,7 @@ import cv2
 import os
 import config
 
-os.environ['CUDA_VISIBLE_DEVICES'] = config.gpu_id
+# os.environ['CUDA_VISIBLE_DEVICES'] = config.gpu_id
 
 import shutil
 import glob
@@ -114,7 +114,7 @@ def train_epoch(net, optimizer, scheduler, train_loader, device, criterion, epoc
 def eval(model, save_path, test_path, device):
     model.eval()
     # torch.cuda.empty_cache()  # speed up evaluating after training finished
-    img_path = os.path.join(test_path, 'img')
+    img_path = os.path.join(test_path, 'imgs')
     gt_path = os.path.join(test_path, 'gt')
     if os.path.exists(save_path):
         shutil.rmtree(save_path, ignore_errors=True)
@@ -169,7 +169,7 @@ def main():
         torch.cuda.manual_seed_all(config.seed)  # 为所有GPU设置随机种子
     else:
         logger.info('train with cpu and pytorch {}'.format(torch.__version__))
-        device = torch.device("cpu")
+        device = torch.device("cuda:0")
 
     train_data = MyDataset(config.trainroot, data_shape=config.data_shape, n=config.n, m=config.m,
                            transform=transforms.ToTensor())
@@ -177,7 +177,11 @@ def main():
                                    num_workers=int(config.workers))
 
     writer = SummaryWriter(config.output_dir)
-    model = PSENet(backbone=config.backbone, pretrained=config.pretrained, result_num=config.n, scale=config.scale)
+
+    # backbone = 'resnet152'
+    # device = torch.device('cuda:0')
+    # model = PSENet(backbone=backbone, pretrained=False, result_num=6).to(device)
+    model = PSENet(backbone=config.backbone, pretrained=config.pretrained, result_num=config.n, scale=config.scale).to(torch.device("cuda:0"))
     if not config.pretrained and not config.restart_training:
         model.apply(weights_init)
 

@@ -3,23 +3,23 @@
 # @Author  : zhoujun
 
 # data config
-trainroot = '/data2/dataset/ICD15/train'
-testroot = '/data2/dataset/ICD15/test'
+trainroot = '/home/simple/mydemo/ocr_project/psenet/detection/train'
+testroot = '/home/simple/mydemo/ocr_project/psenet/detection/test'
 output_dir = 'output/psenet_icd2015_resnet152_4gpu_author_crop_adam_MultiStepLR_authorloss'
 data_shape = 640
 
 # train config
-gpu_id = '2'
+gpu_id = '1'
 workers = 12
 start_epoch = 0
-epochs = 600
+epochs = 1000
 
 train_batch_size = 4
 
 lr = 1e-4
 end_lr = 1e-7
 lr_gamma = 0.1
-lr_decay_step = [200,400]
+lr_decay_step = [300,800]
 weight_decay = 5e-4
 warm_up_epoch = 6
 warm_up_lr = lr * lr_gamma
